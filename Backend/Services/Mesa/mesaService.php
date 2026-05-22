@@ -31,7 +31,7 @@ class MesaService
             return [
                 'sucesso' => false,
                 'mensagem' => 'Mesa não encontrada',
-                'codigo' => '404'
+                'codigo' => 404
             ];
         }
 
@@ -44,7 +44,7 @@ class MesaService
 
     public function listarMesas()
     {
-        $buscar = $this->db->query('SELECT * FROM mesa');
+        $buscar = $this->db->query('SELECT * FROM mesa ORDER BY id_mesa DESC');
 
         $buscar->execute();
 
@@ -61,15 +61,15 @@ class MesaService
     {
         try {
 
-            $dataFormatada = date('Y-m-d');
+           
 
-            $criar = $this->db->prepare('INSERT INTO mesa (capacidade, restricao, data_e_hora) 
-    VALUES (:capacidade, :restricao, :data_e_hora)');
+            $criar = $this->db->prepare('INSERT INTO mesa (capacidade, restricao) 
+    VALUES (:capacidade, :restricao)');
 
             $criar->execute([
                 ':capacidade' => $mesaDados['capacidade'],
                 ':restricao' => $mesaDados['restricao'],
-                ':data_e_hora' => $dataFormatada
+                
 
             ]);
 
@@ -95,16 +95,14 @@ class MesaService
                 throw new Exception($mesa['mensagem'], $mesa['codigo']);
             }
 
-            $dataFormatada = date('Y-m-d');
 
 
-            $atualizar = $this->db->prepare('UPDATE mesa SET capacidade = :capacidade, restricao = :restricao, data_e_hora = :data_e_hora 
+            $atualizar = $this->db->prepare('UPDATE mesa SET capacidade = :capacidade, restricao = :restricao 
              WHERE id_mesa = :id_mesa');
 
             $atualizar->execute([
                 ':capacidade' => $mesaDados['capacidade'],
                 ':restricao' => $mesaDados['restricao'],
-                ':data_e_hora' => $dataFormatada,
                 ':id_mesa' => $idMesa
             ]);
 

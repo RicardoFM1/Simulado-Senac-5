@@ -30,7 +30,7 @@ class UsuarioService
             return [
                 'sucesso' => false,
                 'mensagem' => 'Usuário não encontrado',
-                'codigo' => '404'
+                'codigo' => 404
             ];
         }
 
@@ -43,7 +43,7 @@ class UsuarioService
 
     public function listarUsuarios()
     {
-        $buscar = $this->db->query('SELECT nome, email, cpf, cargo FROM usuario');
+        $buscar = $this->db->query('SELECT nome, email, cpf, cargo FROM usuario ORDER BY id_usuario DESC');
 
         $buscar->execute();
 

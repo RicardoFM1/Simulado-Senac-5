@@ -15,19 +15,19 @@ O intuito é fazer um simulado para treinar para a competição do Senac.
 # Ferramentas utilizadas:
 
 ## Aplicativos: 
-    <p> 
+    
     - Visual Studio Code;
-    <p>
+    
     - Insomnia;
-    <p>
+    
     - Mysql Workbench;
-    <p>
+    
     - Mysql Server;
-    <p>
+    
     - Git;
-    <p>
+    
     - Github;
-    <p>
+    
 
 ## Tecnologias e bibliotecas:
 
@@ -287,6 +287,9 @@ O sistema consiste das seguintes rotas:
 
 <p>
 
+- Nota-se que é necessário estar logado e ser um ADMIN para acessar essa rota.
+
+<p>
 Exemplo de JSON:
 
 ```json
@@ -469,3 +472,27 @@ Exemplo de JSON:
 
 ```
 
+--- 
+
+## Rota de Retrieve:
+<p>
+
+/retrieve - Métodos:
+<p>
+
+```GET```
+<p>
+
+- Nota-se que é necessário estar logado para acessar essa rota.
+
+
+## Rota de Dashboard:
+<p>
+
+/dashboard - Métodos:
+<p>
+
+```GET```
+<p>
+
+- Nota-se que é necessário estar logado e ser um ADMIN para acessar essa rota.

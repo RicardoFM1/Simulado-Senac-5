@@ -8,8 +8,8 @@ require_once __DIR__ . "/../Controllers/Mesa/mesaController.php";
 require_once __DIR__ . "/../Controllers/Convidado/convidadoController.php";
 require_once __DIR__ . "/../Controllers/Checkin/checkinController.php";
 require_once __DIR__ . "/../Controllers/Acompanhante/acompanhanteController.php";
-
-
+require_once __DIR__ . "/../Controllers/Dashboard/dashboardController.php";
+require_once __DIR__ . "/../../Middleware/middleware.php";
 
 
 
@@ -122,6 +122,26 @@ if ($rota === '/acompanhante') {
     }
     if ($metodo === 'DELETE') {
         $acompanhanteController->deletarAcompanhante();
+    }
+}
+
+if ($rota === '/retrieve') {
+
+    if ($metodo === 'GET') {
+
+        http_response_code(200);
+        echo json_encode(Middleware::validarMiddleware());
+        exit;
+    }
+}
+
+if ($rota === '/dashboard') {
+    $dashboardController = new DashboardController();
+
+    if ($metodo === 'GET') {
+
+        http_response_code(200);
+        $dashboardController->listarDashboard();
     }
 }
 

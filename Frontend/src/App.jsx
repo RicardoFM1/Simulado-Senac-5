@@ -37,9 +37,9 @@ function AppContent() {
 
   useEffect(() => {
     buscarUsuario()
-  }, []) // Initial load
+  }, []) 
 
-  if (loading) return <div className="d-flex justify-content-center align-items-center vh-100">Carregando...</div>
+  
 
   return (
     <>

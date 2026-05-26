@@ -96,8 +96,11 @@ class ConvidadoService
             $mesaReferenciada = new MesaService()->buscarMesaPorId($convidadoDados['mesa_idmesa']);
             $convidadosReferenciando = $this->buscarConvidadosPorIdMesa($convidadoDados['mesa_idmesa']);
 
-            if (count($convidadosReferenciando['dados']) >= $mesaReferenciada['dados']['capacidade']) {
-                throw new Exception('Mesa lotada', 409);
+            if ($convidadosReferenciando['sucesso'] === true) {
+
+                if (count($convidadosReferenciando['dados']) >= $mesaReferenciada['dados']['capacidade']) {
+                    throw new Exception('Mesa lotada', 409);
+                }
             }
 
             $criar = $this->db->prepare('INSERT INTO convidado (nome, sobrenome, email, cpf, telefone, categoria, mesa_idmesa) 
@@ -156,8 +159,11 @@ class ConvidadoService
             $mesaReferenciada = new MesaService()->buscarMesaPorId($convidadoDados['mesa_idmesa']);
             $convidadosReferenciando = $this->buscarConvidadosPorIdMesa($convidadoDados['mesa_idmesa']);
 
-            if (count($convidadosReferenciando['dados']) >= $mesaReferenciada['dados']['capacidade'] && $convidadoDados['mesa_idmesa'] !== $convidado['dados']['mesa_idmesa']) {
-                throw new Exception('Mesa lotada', 409);
+            if ($convidadosReferenciando['sucesso'] === true) {
+
+                if (count($convidadosReferenciando['dados']) >= $mesaReferenciada['dados']['capacidade'] && $convidadoDados['mesa_idmesa'] !== $convidado['dados']['mesa_idmesa']) {
+                    throw new Exception('Mesa lotada', 409);
+                }
             }
 
             if ($convidadoDados['confirmacao'] !== 'cancelado') {

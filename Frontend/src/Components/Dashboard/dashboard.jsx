@@ -15,21 +15,31 @@ const Dashboard = () => {
     const [showModal, setShowModal] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
 
-    const buscarDados = async () => {
+    const buscarDashboard = async () => {
         try {
-            const [resSummary, resUsers] = await Promise.all([
-                Api.get('/dashboard'),
-                Api.get('/usuario')
-            ]);
-            setSummary(resSummary.data.convidados);
-            setUsuarios(resUsers.data.dados);
+            const res = await Api.get('/dashboard')
+              
+            setSummary(res.data.dados);
+           
+        } catch (err) {
+            toast.error("Erro ao carregar dados do dashboard");
+        }
+    };
+
+    const buscarUsuarios = async () => {
+        try {
+            const res = await Api.get('/usuario')
+            
+            
+            setUsuarios(res.data.dados);
         } catch (err) {
             toast.error("Erro ao carregar dados do dashboard");
         }
     };
 
     useEffect(() => {
-        buscarDados();
+        buscarDashboard();
+        buscarUsuarios();
     }, []);
 
     const handleEdit = (user) => {
@@ -94,7 +104,7 @@ const Dashboard = () => {
         }
     ];
 
-    if (!summary) return <div className="p-4">Carregando...</div>;
+
 
     return (
         <Container className="py-4">
@@ -105,7 +115,7 @@ const Dashboard = () => {
                     <Card className="text-center bg-primary text-white h-100 shadow-sm border-0">
                         <Card.Body>
                             <Card.Title className="opacity-75">Total de Convidados</Card.Title>
-                            <Card.Text className="display-4 fw-bold">{summary.total}</Card.Text>
+                            <Card.Text className="display-4 fw-bold">{summary?.total || 0}</Card.Text>
                         </Card.Body>
                     </Card>
                 </Col>
@@ -113,7 +123,7 @@ const Dashboard = () => {
                     <Card className="text-center bg-success text-white h-100 shadow-sm border-0">
                         <Card.Body>
                             <Card.Title className="opacity-75">Confirmados</Card.Title>
-                            <Card.Text className="display-4 fw-bold">{summary.confirmados || 0}</Card.Text>
+                            <Card.Text className="display-4 fw-bold">{summary?.convidados?.confirmados || 0}</Card.Text>
                         </Card.Body>
                     </Card>
                 </Col>
@@ -121,7 +131,7 @@ const Dashboard = () => {
                     <Card className="text-center bg-warning text-white h-100 shadow-sm border-0">
                         <Card.Body>
                             <Card.Title className="opacity-75">Não Confirmados</Card.Title>
-                            <Card.Text className="display-4 fw-bold">{summary.nao_confirmados || 0}</Card.Text>
+                            <Card.Text className="display-4 fw-bold">{summary?.convidados?.nao_confirmados || 0}</Card.Text>
                         </Card.Body>
                     </Card>
                 </Col>
@@ -129,7 +139,7 @@ const Dashboard = () => {
                     <Card className="text-center bg-danger text-white h-100 shadow-sm border-0">
                         <Card.Body>
                             <Card.Title className="opacity-75">Cancelados</Card.Title>
-                            <Card.Text className="display-4 fw-bold">{summary.cancelados || 0}</Card.Text>
+                            <Card.Text className="display-4 fw-bold">{summary?.convidados?.cancelados || 0}</Card.Text>
                         </Card.Body>
                     </Card>
                 </Col>

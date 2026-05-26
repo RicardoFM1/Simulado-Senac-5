@@ -1,4 +1,7 @@
 <?php
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: OPTIONS, GET, POST, PUT, DELETE');
+header('Access-Control-Allow-Headers: Authorization, Content-Type');
 
 use Dotenv\Dotenv;
 
@@ -9,7 +12,8 @@ require_once __DIR__ . "/../Controllers/Convidado/convidadoController.php";
 require_once __DIR__ . "/../Controllers/Checkin/checkinController.php";
 require_once __DIR__ . "/../Controllers/Acompanhante/acompanhanteController.php";
 require_once __DIR__ . "/../Controllers/Dashboard/dashboardController.php";
-require_once __DIR__ . "/../../Middleware/middleware.php";
+require_once __DIR__ . "/../Middleware/middleware.php";
+
 
 
 
@@ -17,10 +21,6 @@ $dotenv = Dotenv::createImmutable(__DIR__ . "/../");
 $dotenv->load();
 
 
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: OPTIONS, GET, POST, PUT, DELETE');
-header('Access-Control-Allow-Headers: Authorization, Content-Type');
-header('Access-Control-Allow-Credentials: true');
 
 $rota = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $metodo = $_SERVER['REQUEST_METHOD'];
@@ -28,6 +28,7 @@ $metodo = $_SERVER['REQUEST_METHOD'];
 
 if ($metodo === 'OPTIONS') {
     http_response_code(200);
+    echo 'ok';
     exit;
 }
 
@@ -140,10 +141,12 @@ if ($rota === '/dashboard') {
 
     if ($metodo === 'GET') {
 
-        http_response_code(200);
         $dashboardController->listarDashboard();
+        http_response_code(200);
+    
     }
 }
+
 
 http_response_code(404);
 echo json_encode([

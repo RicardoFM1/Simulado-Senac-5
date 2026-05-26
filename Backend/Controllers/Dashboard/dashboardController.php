@@ -21,7 +21,7 @@ class DashboardController
     public function listarDashboard()
     {
         $this->apenasAdmin();
-        $convidados = new ConvidadoController()->listarConvidados();
+        $convidados = new ConvidadoService()->listarConvidados();
 
 
         $convidadosConfirmados = null;
@@ -43,16 +43,17 @@ class DashboardController
         }
 
         echo json_encode([
-            'sucesso' => true,
+            'sucesso' => false,
             'dados' => [
                 'convidados' => [
                     'listagem' => $convidados['dados'] ?? [],
-                    'confirmados' => $convidadosConfirmados,
-                    'nao_confirmados' => $convidadosNaoConfirmados,
-                    'cancelados' => $convidadosCancelados,
-                    'total' => count($convidados['dados'])
-                ]
+                    'confirmados' => $convidadosConfirmados ?? 0,
+                    'nao_confirmados' => $convidadosNaoConfirmados ?? 0,
+                    'cancelados' => $convidadosCancelados ?? 0,
+                ],
+                'total' => count($convidados['dados']) ?? 0,
             ]
+
         ]);
         exit;
     }

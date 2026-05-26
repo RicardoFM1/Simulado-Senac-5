@@ -44,16 +44,34 @@ class CheckinService
 
     public function listarCheckins()
     {
-        $buscar = $this->db->query('SELECT * FROM checkin ORDER BY id_checkin DESC');
+        $buscar = $this->db->query('SELECT c.id_checkin, c.data_e_hora, u.nome as usuario_nome, u.cpf as usuario_cpf,
+        co.nome as convidado_nome, co.cpf as convidado_cpf
+         FROM checkin c INNER JOIN usuario u ON u.id_usuario = c.usuario_idusuario 
+         INNER JOIN convidado co ON co.id_convidado = c.convidado_idconvidado
+         ORDER BY id_checkin DESC');
 
         $buscar->execute();
+        $resultado = [];
 
-        $checkins = $buscar->fetchAll();
+       while($row = $buscar->fetch()){
+            $resultado[] = [
+                'id_checkin' => $row['id_checkin'],
+                'data_e_hora' => $row['data_e_hora'],
+                'usuario' => [
+                    'nome' => $row['usuario_nome'],
+                    'cpf' => $row['usuario_cpf']
+                ],
+                'convidado' => [
+                    'nome' => $row['convidado_nome'],
+                    'cpf' => $row['convidado_cpf']
+                ]
+            ];
+       }
 
         return [
             'sucesso' => true,
-            'dados' => $checkins,
-            'total' => count($checkins)
+            'dados' => $resultado,
+            'total' => count($resultado)
         ];
     }
 

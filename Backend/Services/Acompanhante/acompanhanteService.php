@@ -47,16 +47,35 @@ class AcompanhanteService
 
     public function listarAcompanhantes()
     {
-        $buscar = $this->db->query('SELECT * FROM acompanhante ORDER BY id_acompanhante DESC');
+        $buscar = $this->db->query('SELECT a.id_acompanhante, a.nome as acompanhante_nome, a.sobrenome as
+        acompanhante_sobrenome, a.email, a.cpf as acompanhante_cpf, a.idade, c.nome as convidado_nome,
+        c.cpf as convidado_cpf FROM acompanhante a 
+        INNER JOIN convidado c ON c.id_convidado = a.convidado_idconvidado
+        ORDER BY id_acompanhante DESC');
 
         $buscar->execute();
 
-        $acompanhantes = $buscar->fetchAll();
+        $resultado = [];
+
+        while ($row = $buscar->fetch()) {
+            $resultado[] = [
+                'id_acompanhante' => $row['id_acompanhante'],
+                'nome' => $row['acompanhante_nome'],
+                'sobrenome' => $row['acompanhante_sobrenome'],
+                'email' => $row['email'],
+                'cpf' => $row['acompanhante_cpf'],
+                'idade' => $row['idade'],
+                'convidado' => [
+                    'nome' => $row['convidado_nome'],
+                    'cpf' => $row['convidado_cpf']
+                ]
+            ];
+        }
 
         return [
             'sucesso' => true,
-            'dados' => $acompanhantes,
-            'total' => count($acompanhantes)
+            'dados' => $resultado,
+            'total' => count($resultado)
         ];
     }
 
